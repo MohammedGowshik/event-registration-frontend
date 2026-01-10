@@ -1,23 +1,251 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f4f4f4; }
+    h2 { color: #7a1417; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background: #9b1c1f; color: white; }
+    .box { background: white; padding: 15px; margin-bottom: 15px; border-radius: 6px; }
+    button { padding: 10px 20px; background: #9b1c1f; color: white; border: none; cursor: pointer; }
+    button:hover { background: #7a1417; }
+  </style>
+</head>
+
+<body>
+
+<h2>Admin Dashboard</h2>
+
+<div class="box">
+  <p><b>Total Registrations:</b> <span id="totalReg">0</span></p>
+  <p><b>Total People Registered:</b> <span id="totalPeople">0</span></p>
+</div>
+
+<button onclick="downloadExcel()">Download Excel</button>
+
+<table>
+  <thead>
+    <tr>
+      <th>S.No.</th> <!-- Added Serial Number Column -->
+      <!-- <th>Name</th>
+      <th>Age</th>
+      <th>Phone</th>
+      <th>Gender</th>
+      <th>City</th>
+      <th>No. of People</th>
+    </tr>
+  </thead>
+  <tbody id="tableBody"></tbody>
+</table>
+
+<script>
+const PASSWORD = "admin123";
+const API = "https://event-registration-backend-ayiw.onrender.com";
+
+async function loadDashboard() {
+  try {
+    const res = await fetch(`${API}/api/admin/dashboard?password=${PASSWORD}`);
+    const data = await res.json();
+
+    // Update total registrations and total people
+    document.getElementById("totalReg").textContent = data.totalRegistrations;
+    document.getElementById("totalPeople").textContent = data.totalPeople;
+
+    const tbody = document.getElementById("tableBody");
+    tbody.innerHTML = "";
+
+    // Loop through participants and add rows with S.No.
+    data.participants.forEach((p, index) => {
+      tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td> <!-- Serial number -->
+          <!-- <td>${p.name}</td>
+          <td>${p.age}</td>
+          <td>${p.phone || '-'}</td>
+          <td>${p.gender}</td>
+          <td>${p.city}</td>
+          <td>${p.numPeople}</td>
+        </tr>
+      `;
+    });
+  } catch (err) {
+    console.error("Error loading dashboard:", err);
+    alert("Failed to load dashboard. Please check your API connection.");
+  }
+} -->
+
+<!-- // Function to download Excel
+function downloadExcel() {
+  window.location.href = `${API}/api/download?password=${PASSWORD}`;
+}
+
+// Load dashboard on page load
+loadDashboard();
+</script>
+
+</body>
+</html> --> 
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Admin - Download Participants</title>
+  <title>Admin Panel</title>
   <style>
-    body { font-family: 'Segoe UI', sans-serif; padding: 40px; text-align: center; }
-    button { padding: 12px 24px; font-size: 18px; border-radius: 8px; cursor: pointer; background: #1d98d4; color: white; border: none; transition: 0.3s; }
-    button:hover { background: #0f4c75; transform: scale(1.05); }
+    /* Body and Background */
+    body { 
+      font-family: Arial, sans-serif; 
+      padding: 20px; 
+      background: linear-gradient(135deg, #f0f4f8, #d9e2ec); /* soft gradient background */
+      min-height: 100vh;
+    }
+
+    /* Header */
+    h2 { 
+      color: #7a1417; 
+      text-align: center;
+      background: linear-gradient(90deg, #9b1c1f, #e63946);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 2.2em;
+      margin-bottom: 20px;
+    }
+
+    /* Info Boxes */
+    .box { 
+      background: white; 
+      padding: 20px; 
+      margin-bottom: 20px; 
+      border-radius: 10px; 
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .box p {
+      font-size: 1.1em;
+    }
+
+    /* Buttons */
+    button { 
+      padding: 12px 25px; 
+      background: #9b1c1f; 
+      color: white; 
+      border: none; 
+      border-radius: 6px; 
+      cursor: pointer; 
+      margin-bottom: 20px;
+      transition: 0.3s;
+    }
+
+    button:hover { 
+      background: #7a1417; 
+    }
+
+    /* Table */
+    table { 
+      width: 100%; 
+      border-collapse: collapse; 
+      margin-top: 10px; 
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    th, td { 
+      border: 1px solid #ccc; 
+      padding: 10px; 
+      text-align: center; 
+    }
+
+    th { 
+      background: #9b1c1f; 
+      color: white; 
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) { 
+      background: #f8f8f8; 
+    }
+
+    tr:hover { 
+      background: #ffe5e5; 
+      transition: 0.3s;
+    }
   </style>
 </head>
+
 <body>
 
-<h2>Admin - Download Participants</h2>
-<button id="downloadBtn">Download Excel</button>
+<h2>Admin Dashboard</h2>
+
+<div class="box">
+  <p><b>Total Registrations:</b> <span id="totalReg">0</span></p>
+  <p><b>Total People Registered:</b> <span id="totalPeople">0</span></p>
+</div>
+
+<button onclick="downloadExcel()">Download Excel</button>
+
+<table>
+  <thead>
+    <tr>
+      <th>S.No.</th>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Phone</th>
+      <th>Gender</th>
+      <th>City</th>
+      <th>No. of People</th>
+    </tr>
+  </thead>
+  <tbody id="tableBody"></tbody>
+</table>
 
 <script>
-const btn = document.getElementById("downloadBtn");
-btn.addEventListener("click", () => {
-  window.location.href = "https://event-registration-backend-ayiw.onrender.com/api/download?password=admin123";
-});
+const PASSWORD = "admin123";
+const API = "https://event-registration-backend-ayiw.onrender.com";
+
+async function loadDashboard() {
+  try {
+    const res = await fetch(`${API}/api/admin/dashboard?password=${PASSWORD}`);
+    const data = await res.json();
+
+    document.getElementById("totalReg").textContent = data.totalRegistrations;
+    document.getElementById("totalPeople").textContent = data.totalPeople;
+
+    const tbody = document.getElementById("tableBody");
+    tbody.innerHTML = "";
+
+    data.participants.forEach((p, index) => {
+      tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${p.name}</td>
+          <td>${p.age}</td>
+          <td>${p.phone || '-'}</td>
+          <td>${p.gender}</td>
+          <td>${p.city}</td>
+          <td>${p.numPeople}</td>
+        </tr>
+      `;
+    });
+  } catch (err) {
+    console.error("Error loading dashboard:", err);
+    alert("Failed to load dashboard. Please check your API connection.");
+  }
+}
+
+function downloadExcel() {
+  window.location.href = `${API}/api/download?password=${PASSWORD}`;
+}
+
+loadDashboard();
 </script>
 
 </body>
