@@ -375,6 +375,9 @@ function showModal(message) {
 
 function closeModal() { modal.classList.remove("show"); }
 
+// 🔹 Updated backend URL to Render (works on Netlify)
+const BACKEND_URL = "https://event-registration-backend-ayiw.onrender.com/register";
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -389,7 +392,7 @@ form.addEventListener("submit", async (e) => {
   };
 
   try {
-    const res = await fetch("http://localhost:3000/api/register", {
+    const res = await fetch(BACKEND_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
@@ -400,9 +403,11 @@ form.addEventListener("submit", async (e) => {
     form.reset();
   } catch (err) {
     showModal("Registration Failed");
+    console.error(err);
   }
 });
 </script>
 
 </body>
 </html>
+
