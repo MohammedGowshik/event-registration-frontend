@@ -4,41 +4,71 @@
 <meta charset="UTF-8">
 <title>Event Name</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
-* { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
 body {
-  height:100vh;
-  /* background:linear-gradient(120deg,#1d98d4,#0f4c75); */
-  background-image: url(./imgaes/Screenshot\ \(1\).png);
+  min-height: 100vh;
+  background-image: url("./imgaes/Screenshot (1).png");
   background-repeat: no-repeat;
   background-position: center;
-  display:flex; align-items:center; justify-content:center;
-  color:white; overflow:hidden;
+  background-size: contain;
+  background-color: #7a1417;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.hero { text-align:center; animation:fadeIn 1.5s ease; }
-.hero h1 { font-size:48px; letter-spacing:2px; }
-.hero h3 { font-weight:400; margin:15px 0; opacity:0.9; }
-.hero p { max-width:500px; margin:20px auto; line-height:1.6; opacity:0.85; }
+
+.hero {
+  text-align: center;
+  animation: fadeIn 1.5s ease;
+}
+
+/* REGISTER BUTTON */
 .btn {
-  display:inline-block; margin-top:200px; padding:14px 40px;
-  border-radius:30px; background:white; color:#0f4c75;
-  font-weight:bold; text-decoration:none; transition:0.3s;
+  display: inline-block;
+  margin-top: 40vh;
+  padding: 14px 42px;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #d4af37, #b8962e);
+  color: #7a1417;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  border: 2px solid #f3e5ab;
+  transition: 0.3s ease;
 }
+
 .btn:hover {
-  transform:translateY(-3px) scale(1.05);
-  box-shadow:0 10px 25px rgba(0,0,0,0.2);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
 }
-@keyframes fadeIn { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .btn {
+    margin-top: 48vh;
+    padding: 12px 32px;
+    font-size: 16px;
+  }
+}
 </style>
 </head>
+
 <body>
-
-<div class="hero">
-  <!-- <h1>Event Name</h1>
-  <h3>Innovate • Build • Inspire</h3>
-  <p>A premier technology event bringing together developers, innovators, and future leaders.</p> -->
-  <a href="register.html" class="btn">Register Now</a>
-</div>
-
+  <div class="hero">
+    <a href="register.html" class="btn">Register Now</a>
+  </div>
 </body>
 </html>
