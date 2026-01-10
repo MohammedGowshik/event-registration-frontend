@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Event Registration</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+
+    body {
+      /* background: linear-gradient(135deg, #0f4c75, #1d98d4); */
+      background-image: url(./imgaes/Screenshot\ \(3\).png);
+      background-repeat: no-repeat;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    /* Form Card */
+    .form {
+      background: white;
+      padding: 32px;
+      width: 380px;
+      border-radius: 14px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      animation: slideUp 1s ease;
+    }
+
+    .form h2 { text-align: center; color: #0f4c75; margin-bottom: 22px; }
+
+    input, select {
+      width: 100%;
+      height: 46px;
+      padding: 0 14px;
+      margin-bottom: 14px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      transition: 0.3s;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #1d98d4;
+      box-shadow: 0 0 8px rgba(29,152,212,0.3);
+    }
+
+    button {
+      width: 100%;
+      height: 46px;
+      background: #1d98d4;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: 0.3s;
+    }
+
+    button:hover { background: #0f4c75; }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Modal Popup */
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+    }
+
+    .modal.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      animation: popupIn 0.4s ease;
+      min-width: 280px;
+    }
+
+    .modal-content h3 {
+      color: #0f4c75;
+      margin-bottom: 20px;
+    }
+
+    .modal-content button {
+      background: #1d98d4;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    .modal-content button:hover { background: #0f4c75; }
+
+    @keyframes popupIn {
+      0% { opacity: 0; transform: scale(0.7); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Registration Form -->
+  <form id="registerForm" class="form">
+    <h2>Event Registration</h2>
+    <input type="text" id="name" placeholder="Full Name" required />
+    <input type="number" id="age" placeholder="Age" required min="1" />
+    <input type="email" id="email" placeholder="Email (optional)" />
+    <input type="tel" id="phone" placeholder="Phone Number" required />
+    <select id="gender" required>
+      <option value="">Select Gender</option>
+      <option>Male</option>
+      <option>Female</option>
+      <option>Other</option>
+    </select>
+    <input type="text" id="city" placeholder="City" required />
+    <button type="submit">Register</button>
+  </form>
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <h3 id="modalMessage">Registration Successful!</h3>
+      <button onclick="closeModal()">OK</button>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("registerForm");
+    const modal = document.getElementById("modal");
+    const modalMessage = document.getElementById("modalMessage");
+
+    function showModal(message) {
+      modalMessage.textContent = message;
+      modal.classList.add("show");
+    }
+
+    function closeModal() {
+      modal.classList.remove("show");
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = {
+        name: form.name.value,
+        age: form.age.value,
+        email: form.email.value,
+        phone: form.phone.value,
+        gender: form.gender.value,
+        city: form.city.value
+      };
+
+      try {
+        const res = await fetch("https://event-registration-backend-ayiw.onrender.com/api/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        showModal(result.message);
+        form.reset();
+      } catch (err) {
+        console.error(err);
+        showModal("Registration Failed");
+      }
+    });
+  </script>
+
+</body>
+</html>
