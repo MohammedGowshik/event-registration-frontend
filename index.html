@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Event Registration</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { box-sizing: border-box; }
+body {
+  background: linear-gradient(135deg, #0f4c75, #1d98d4);
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.form {
+  background: white;
+  padding: 32px;
+  width: 380px;
+  border-radius: 14px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  animation: slideUp 1s ease;
+}
+.form h2 { text-align: center; color: #0f4c75; margin-bottom: 22px; }
+input, select {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  transition: 0.3s;
+}
+input:focus, select:focus {
+  outline: none;
+  border-color: #1d98d4;
+  box-shadow: 0 0 10px rgba(29,152,212,0.3);
+}
+button {
+  width: 100%;
+  height: 46px;
+  background: linear-gradient(90deg,#1d98d4,#0f4c75);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: all 0.3s ease;
+}
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Toast message */
+#toast {
+  position: fixed;
+  top: 40px;              /* move down a bit from top */
+  left: 50%;              /* center horizontally */
+  transform: translateX(-50%) translateY(-20px); /* initial hidden position */
+  background-color: #28a745;
+  color: white;
+  padding: 18px 28px;     /* bigger padding */
+  border-radius: 12px;    /* bigger rounded corners */
+  font-size: 18px;        /* bigger text */
+  font-weight: bold;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  opacity: 0;
+  transition: all 0.5s ease;
+  z-index: 1000;
+}
+
+#toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);  /* slide down */
+}
+
+#toast.error {
+  background-color: #dc3545; /* red for error */
+}
+
+/* Modal background */
+.modal {
+  display: none; /* hidden by default */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6); /* dark overlay */
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.4s;
+}
+
+/* Modal content box */
+.modal-content {
+  background: white;
+  padding: 30px 40px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  animation: slideDown 0.4s;
+}
+
+.modal-content p {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.modal-content button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background: #1d98d4;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.modal-content button:hover {
+  background: #0f4c75;
+  transform: scale(1.05);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; } 
+  to { opacity: 1; }
+}
+@keyframes slideDown {
+  from { transform: translateY(-30px); opacity:0; } 
+  to { transform: translateY(0); opacity:1; }
+}
+
+</style>
+</head>
+<body>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <p id="modal-message">Registration Successful!</p>
+    <button id="modal-ok">OK</button>
+  </div>
+</div>
+
+
+<form id="registerForm" class="form">
+  <h2>Event Registration</h2>
+  <input type="text" id="name" placeholder="Full Name" required />
+  <input type="number" id="age" placeholder="Age" required min="1" />
+  <input type="email" id="email" placeholder="Email (optional)" />
+  <input type="tel" id="phone" placeholder="Phone Number" required />
+  <select id="gender" required>
+    <option value="">Select Gender</option>
+    <option>Male</option>
+    <option>Female</option>
+    <option>Other</option>
+  </select>
+  <input type="text" id="city" placeholder="City" required />
+  <button type="submit">Register</button>
+</form>
+
+<div id="toast"></div>
+
+<script>
+const form = document.getElementById("registerForm");
+
+// function showToast(message, type="success"){
+//   const toast = document.getElementById("toast");
+//   toast.innerText = message;
+//   toast.className = "show";
+//   if(type==="error") toast.classList.add("error");
+//   setTimeout(()=>{ toast.className=""; }, 3000);
+// }
+
+function showModal(message){
+  const modal = document.getElementById("modal");
+  const modalMessage = document.getElementById("modal-message");
+  modalMessage.innerText = message;
+  modal.style.display = "flex"; // show modal
+
+  const okBtn = document.getElementById("modal-ok");
+  okBtn.onclick = () => {
+    modal.style.display = "none"; // hide modal
+  }
+}
+
+
+form.addEventListener("submit", async (e)=>{
+  e.preventDefault();
+  const data = {
+    name: form.name.value,
+    age: form.age.value,
+    email: form.email.value,
+    phone: form.phone.value,
+    gender: form.gender.value,
+    city: form.city.value
+  };
+  try {
+    const res = await fetch("https://event-registration-backend-ayiw.onrender.com/api/register", {
+      method:"POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+    const result = await res.json();
+    showModal(result.message);  // Show modal instead of toast
+    form.reset();
+  } catch(err){
+    console.error(err);
+    showModal("Registration Failed"); // Show error modal
+  }
+});
+
+</script>
+
+</body>
+</html>
